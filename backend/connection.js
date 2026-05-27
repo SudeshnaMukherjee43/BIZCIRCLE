@@ -1,4 +1,5 @@
 require('dotenv').config();
+const dns = require('dns');
 const mongoose = require('mongoose');
 
 const url = process.env.MONGO_URI;
@@ -6,6 +7,10 @@ const url = process.env.MONGO_URI;
 if (!url) {
   console.error('❌ MONGO_URI is not defined in .env file');
   process.exit(1);
+}
+
+if (url.startsWith('mongodb+srv://')) {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
 }
 
 const connectDB = async (retryCount = 5) => {
